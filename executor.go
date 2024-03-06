@@ -54,6 +54,12 @@ func (p *ThreadPool) worker(Type string) {
 			if Type == Ordinary {
 				return // 任务队列为空，普通任务安全退出
 			}
+			task, ok := <-p.taskQueue
+			if !ok {
+				return // 任务队列关闭，安全退出
+			}
+			task()      // 执行任务
+			p.wg.Done() // 任务完成，减少等待组计数
 		}
 	}
 }
