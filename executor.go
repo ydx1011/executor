@@ -84,3 +84,7 @@ func (p *ThreadPool) AddTask(task Task) (err error) {
 func (p *ThreadPool) Wait() {
 	p.wg.Wait() // 等待所有任务完成
 }
+
+func (p *ThreadPool) Stop() {
+	close(p.taskQueue)
+}
